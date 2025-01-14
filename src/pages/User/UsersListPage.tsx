@@ -206,7 +206,6 @@ export default function EnhancedTable() {
       return;
     }
 
-    // Confirm deletion
     const confirmDelete = window.confirm(
       `Are you sure you want to delete ${selected.length} selected users?`
     );

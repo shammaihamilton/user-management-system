@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../redux/slices/authSlice';
+import { login } from '../redux/thunks/authThunk';
 import { RootState, AppDispatch } from '../redux/store';
 import { Box, Button, TextField, Typography, CircularProgress, Alert } from '@mui/material';
 

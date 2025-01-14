@@ -1,15 +1,15 @@
-// import React from "react";
+
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Navbar from "../navbar/navbar";
 import HomeIcon from "@mui/icons-material/Home";
 import Button from "@mui/material/Button";
-import ThemeToggler from "../../DarkWeightToggler"; // Import the ThemeToggler component
+import ThemeToggler from "../../DarkWeightToggler"; 
 import "./header.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
-import { logout } from "../../../redux/slices/authSlice";
+import { logout } from "../../../redux/thunks/authThunk";
 import { useTheme } from "@mui/material/styles";
 
 export default function Header() {

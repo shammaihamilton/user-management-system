@@ -1,6 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { apiRequest } from '../../api/apiRequest'; // Path to your apiRequest function
-import { AxiosMethods } from '../../api/apiRequest';
+import { createSlice,
+    PayloadAction } from '@reduxjs/toolkit';
+import { login, logout } from '../../redux/thunks/authThunk';
+
 // Define the shape of the auth state
 interface AuthState {
   token: string | null;
@@ -19,37 +20,7 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Async thunk for login
-export const login = createAsyncThunk(
-  'auth/login',
-  async (
-    { username, password }: { username: string; password: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const data = await apiRequest<{ token: string; user: any }>(AxiosMethods.POST, 'api/auth/login', {
-        username,
-        password,
-      });
-      return data; // Assumes API response includes { token, user }
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
-    }
-  }
-);
 
-// Async thunk for logout
-export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
-  try {
-    // Optionally, make a request to invalidate the token on the server
-    await apiRequest(AxiosMethods.POST, '/auth/logout');
-
-    // Clear token and user data (handled by slice reducers)
-    dispatch(authSlice.actions.clearAuth());
-  } catch (error: any) {
-    console.error('Logout failed:', error.message);
-  }
-});
 
 // Auth slice
 const authSlice = createSlice({

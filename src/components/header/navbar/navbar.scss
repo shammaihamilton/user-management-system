@@ -1,0 +1,27 @@
+@use '../../../styles/variables' as *;
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+    color: $white;
+}
+
+.navbar .MuiLink-root {
+    color: $white;
+    text-decoration: none;
+
+    &:hover {
+        color: $primary_color_hover;
+    }
+}
+
+.navbar .MuiButton-root {
+    background-color: $primary_color;
+    color: #000;
+}
+
+.navbar .MuiButton-root:hover {
+    background-color: $primary_color_hover;
+}

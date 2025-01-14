@@ -1,0 +1,12 @@
+@use '../../../styles/variables' as *;
+
+.header-content {
+    background-color: $primary_color;
+    border-bottom: 1px solid $primary_color;
+
+    .home-icon {
+        color: $white;
+        height: 2rem;
+        width: 2rem;
+    }
+}

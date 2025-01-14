@@ -319,12 +319,12 @@ export default function EnhancedTable() {
                       <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">{row.createdAt}</TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => handleDeleteUser(row._id)}>
+                        <Button variant="contained" onClick={() => handleDeleteUser(row._id)}>
                           Delete
                         </Button>
                       </TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => showUserPage(row._id)}>
+                        <Button variant="contained" onClick={() => showUserPage(row._id)}>
                           Edit
                         </Button>
                       </TableCell>

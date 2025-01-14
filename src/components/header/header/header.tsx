@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Navbar from "../navbar/navbar";
 import HomeIcon from "@mui/icons-material/Home";
 import Button from "@mui/material/Button";
-import ThemeToggler from "../../DarkWeightToggler"; 
+import DarkModeToggler from "../../DarkModeToggler"; 
 import "./header.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
@@ -36,7 +36,7 @@ export default function Header() {
         </Typography>
 
         {/* Theme Toggler */}
-        <ThemeToggler />
+        <DarkModeToggler />
 
         <Navbar />
         <Button

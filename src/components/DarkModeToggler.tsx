@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
-const DarkWeightToggler: React.FC = () => {
+const DarkModeToggler: React.FC = () => {
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -24,4 +24,4 @@ const DarkWeightToggler: React.FC = () => {
   );
 };
 
-export default DarkWeightToggler;
+export default DarkModeToggler;

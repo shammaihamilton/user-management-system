@@ -121,8 +121,6 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-
-
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: number[] = [];
@@ -161,7 +159,6 @@ export default function EnhancedTable() {
     if (!Array.isArray(ids)) ids = [ids]; // Convert single ID to an array
 
     if (ids.length > 1) {
-      // alert("You can delete up to 5 users at a time.");
       return;
     }
     const user = users.find((u: any) => u._id === ids[0]);
@@ -170,7 +167,7 @@ export default function EnhancedTable() {
       return;
     }
     const confirmed = window.confirm(
-      `Are you sure you want to delete ${user.username} user(s)?`
+      `Are you sure you want to delete ${user.username} user?`
     );
     if (!confirmed) return;
 
@@ -183,11 +180,13 @@ export default function EnhancedTable() {
       alert("Failed to delete user. Please try again.");
     }
   };
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
-    if ('checked' in event.target) {
+  const handleSelectAllClick = (
+    event: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>
+  ) => {
+    if ("checked" in event.target) {
       const target = (event.target as HTMLInputElement).checked;
       const newSelected = users.map((n: any) => n._id);
-  
+
       if (target) {
         setSelected(newSelected);
       } else {
@@ -195,7 +194,7 @@ export default function EnhancedTable() {
       }
     }
   };
-  
+
   const handleDeleteSelected = () => {
     if (selected.length === 0) {
       alert("No users selected for deletion.");
@@ -221,7 +220,7 @@ export default function EnhancedTable() {
         console.error("Error deleting users:", error);
       });
 
-    setSelected([]); 
+    setSelected([]);
   };
 
   function showUserPage(id?: number): void {
@@ -251,12 +250,15 @@ export default function EnhancedTable() {
           control={<Switch checked={dense} onChange={handleChangeDense} />}
           label="Dense padding"
         />
-        <Button variant="contained" onClick={() => showUserPage()}>Add</Button>
+        <Button variant="contained" onClick={() => showUserPage()}>
+          Add
+        </Button>
       </div>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length}
-         onDelete={handleDeleteSelected}
-          />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onDelete={handleDeleteSelected}
+        />
         {loading ? (
           <Box display="flex" justifyContent="center" m={2}>
             <CircularProgress />
@@ -312,22 +314,35 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row._id}
+                        {row._id.substring(0, 6)}
                       </TableCell>
                       <TableCell align="right">{row.username}</TableCell>
                       <TableCell align="right">{row.fullName}</TableCell>
                       <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">{row.createdAt}</TableCell>
-                      <TableCell align="right">
-                        <Button variant="contained" onClick={() => handleDeleteUser(row._id)}>
+                      <TableCell
+                        align="right"
+                        sx={{ alignItems: "right" }}
+                        colSpan={headCells.length}
+                      >
+                        <Button
+                          sx={{ margin: "5px" }}
+                          color="error"
+                          variant="contained"
+                          onClick={() => handleDeleteUser(row._id)}
+                        >
                           Delete
                         </Button>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Button variant="contained" onClick={() => showUserPage(row._id)}>
+                        <Button
+                          sx={{ margin: "5px" }}
+                          variant="contained"
+                          onClick={() => showUserPage(row._id)}
+                        >
                           Edit
                         </Button>
                       </TableCell>
+                      {/* <TableCell align="right">
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}

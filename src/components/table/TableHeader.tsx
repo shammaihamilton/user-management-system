@@ -70,7 +70,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: "1 1 100%" }}
+          sx={{ flex: "1 1 100%", fontWeight: 'bold', fontSize: '20px' }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -79,12 +79,12 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: "1 1 100%" }}
+          sx={{ flex: "1 1 100%", color: "inherit", fontWeight: 'bold', fontSize: '1.5rem' }}
           variant="h6"
           id="tableTitle"
           component="div"
         >
-          User
+          Users
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -96,7 +96,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
-            <FilterListIcon />
+            <FilterListIcon  />
           </IconButton>
         </Tooltip>
       )}
@@ -122,7 +122,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead color="primary">
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell padding="checkbox"  >
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -134,7 +134,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
           />
         </TableCell>
         {headCells.map((headCell) => (
-          <TableCell
+          <TableCell 
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
@@ -154,11 +154,9 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
             </TableSortLabel>
           </TableCell>
         ))}
-        {/* <TableCell title="Edit" sx={{textAlign:"right", paddingRight:"28px"}}>Delete</TableCell>
-          <TableCell title="Edit" sx={{textAlign:"right", paddingRight:"35px"}}>Edit</TableCell> */}
         <TableCell
           title="Edit"
-          sx={{ textAlign: "right", paddingRight: "0px" }}
+          sx={{ textAlign: "right", paddingRight: "70px",  }}
         >
           Actions
         </TableCell>

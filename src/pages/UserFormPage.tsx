@@ -53,6 +53,9 @@ const UserFormPage: React.FC = () => {
         .catch((err) => setError(err))
         .finally(() => setLoading(false));
     }
+    return () => {
+      setError(null);
+    };
   }, [id, dispatch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +129,7 @@ const UserFormPage: React.FC = () => {
       </Typography>
 
       {error && (
-        <Typography variant="body1" color="error" sx={{ marginBottom: 2 }}>
+        <Typography variant="body1" sx={{ marginBottom: 2, color: 'red' }}>
           {error}
         </Typography>
       )}

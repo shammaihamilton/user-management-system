@@ -1,24 +1,34 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import {fetchUsers, fetchUserById , addUser, updateUser, deleteUser } from '../thunks/usersThunk';
+import {
+  fetchUsers,
+  fetchUserById,
+  addUser,
+  updateUser,
+  deleteUser,
+} from "../thunks/usersThunk";
 
+interface UsersState {
+  users: any[];
+  singleUser: any | null;
+  loading: boolean;
+  error: string | null;
+}
 
 // Define the initialState
-    const initialState: { users: any[]; singleUser: any | null; loading: boolean; error: string | null } = {
-      users: [],
-      singleUser: null,
-      loading: false,
-      error: null,
-    };
-
+const initialState: UsersState = {
+  users: [],
+  singleUser: null,
+  loading: false,
+  error: null,
+};
 
 // User Slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // Handle fetchUsers
     builder
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
@@ -86,10 +96,15 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteUser.fulfilled, (state, action: PayloadAction<string[]>) => {
-        state.loading = false;
-        state.users = state.users.filter((user) => !action.payload.includes(user._id));
-      })
+      .addCase(
+        deleteUser.fulfilled,
+        (state, action: PayloadAction<string[]>) => {
+          state.loading = false;
+          state.users = state.users.filter(
+            (user) => !action.payload.includes(user._id)
+          );
+        }
+      )
       .addCase(deleteUser.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload.message; // Display a general error message

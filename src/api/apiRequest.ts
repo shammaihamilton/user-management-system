@@ -9,7 +9,6 @@ export enum AxiosMethods {
   DELETE = "DELETE",
 }
 
-// Create an Axios instance
 const apiClient = axios.create({
   baseURL: "https://server-n42x.onrender.com",
   headers: {
@@ -17,7 +16,6 @@ const apiClient = axios.create({
   },
 });
 
-// const token = useSelector((state: any) => state.auth.token);
 // Improve token getter to handle different storage methods
 export let getToken: () => string | null = () => {
   const token = localStorage.getItem("token");
@@ -94,7 +92,7 @@ apiClient.interceptors.response.use(
   }
 );
 
-// Improved API request function with better typing and error handling
+
 export const apiRequest = async <T>(
   method: AxiosMethods,
   url: string,
@@ -115,7 +113,7 @@ export const apiRequest = async <T>(
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      // Enhanced error handling with more details
+      
       const errorMessage = error.response?.data?.message || error.message;
       const status = error.response?.status;
 

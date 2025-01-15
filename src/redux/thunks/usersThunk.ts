@@ -1,7 +1,6 @@
-import { apiRequest } from "../../api/apiRequest"; // Path to your apiRequest function
+import { apiRequest } from "../../api/apiRequest"; 
 import { AxiosMethods } from "../../api/apiRequest";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-// Async Thunks for CRUD operations on users
 
 // GET: Retrieve a list of all users
 export const fetchUsers = createAsyncThunk(
@@ -10,7 +9,7 @@ export const fetchUsers = createAsyncThunk(
     try {
       const data = await apiRequest<any[]>(AxiosMethods.GET, "/api/users");
       console.log(data);
-      return data; // Assumes the API returns an array of users
+      return data; // the API returns an array of users
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch users"
@@ -25,7 +24,7 @@ export const fetchUserById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const data = await apiRequest<any>(AxiosMethods.GET, `/api/users/${id}`);
-      return data; // Assumes the API returns a single user object
+      return data; // the API returns a single user object
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch user"
@@ -53,7 +52,7 @@ export const addUser = createAsyncThunk(
         fullName,
         email,
       });
-      return data; // Assumes the API returns the created user
+      return data; // the API returns the created user
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to add user"
@@ -88,7 +87,7 @@ export const updateUser = createAsyncThunk(
         fullName,
         email,
       });
-      return data; // Assumes the API returns the updated user
+      return data; //  the API returns the updated user
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to update user"
@@ -96,19 +95,6 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
-
-// DELETE: Delete a user
-// export const deleteUser = createAsyncThunk(
-//   'users/delete',
-//   async (id: string, { rejectWithValue }) => {
-//     try {
-//       const data = await apiRequest<any>(AxiosMethods.DELETE, `/api/users/${id}`);
-//       return data; // Assumes the API returns a confirmation of deletion
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to delete user');
-//     }
-//   }
-// );
 
 
 export const deleteUser = createAsyncThunk(

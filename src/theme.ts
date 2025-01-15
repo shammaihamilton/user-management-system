@@ -9,7 +9,7 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
   const darkBackgroundPaper = '#1e1e1e';
   const lightTextPrimary = '#000000';
   const darkTextPrimary = '#ffffff';
-
+  const backgroundColor = 'rgba(255, 255, 255, 0.7)';
 
   return {
     palette: {
@@ -18,6 +18,7 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
         main: primaryMain,
         dark: '#01579b',
         light: '#cfe2f3',
+        contrastText: mode === 'light'? lightTextPrimary : darkTextPrimary,
       },
       secondary: {
         main: secondaryMain,
@@ -25,10 +26,11 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
       background: {
         default: mode === 'light' ? lightBackgroundDefault : darkBackgroundDefault,
         paper: mode === 'light' ? lightBackgroundPaper : darkBackgroundPaper,
+        
       },
       text: {
         primary: mode === 'light' ? lightTextPrimary : darkTextPrimary,
-        secondary: mode === 'light' ? '#000000' : 'rgba(255, 255, 255, 0.7)',
+        secondary: mode === 'light' ? lightTextPrimary : backgroundColor,
       },
     },
     typography: {
@@ -73,6 +75,11 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
           root: {
             textDecoration: 'none',
             color: mode === 'light' ? lightTextPrimary : darkTextPrimary,
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+            '&:hover': {
+              color: mode === 'light' ? lightTextPrimary : darkTextPrimary,
+            },
           },
         },
       },
@@ -82,6 +89,7 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
             backgroundColor: mode === 'light' ? primaryMain : darkBackgroundPaper,
             '& .MuiSvgIcon-root': {
               color: mode === 'light' ? darkTextPrimary : darkTextPrimary,
+              fontSize: '1.5rem',
             },
             '& .MuiTypography-root': {
               color: mode === 'light' ? darkTextPrimary : darkTextPrimary,

@@ -249,7 +249,7 @@ const UserFormPage: React.FC = () => {
             {id ? 'Update' : 'Add'} User
           </Button>
           <Button
-            variant="outlined"
+            variant="contained"
             color="secondary"
             onClick={() => navigate('/users')}
             disabled={loading}

@@ -17,7 +17,7 @@ const DarkModeToggler: React.FC = () => {
       color="inherit"
       onClick={() => dispatch(toggleMode())}
       aria-label="toggle theme"
-      sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#000' }}
+      sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#000', paddingBottom: '1.6rem' }}
     >
       {theme.palette.mode === 'light' ? <Brightness7 /> : <Brightness4 />}
     </IconButton>

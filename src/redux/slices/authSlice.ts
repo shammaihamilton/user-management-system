@@ -6,7 +6,7 @@ import { login, logout } from '../../redux/thunks/authThunk';
 interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
-  user: Record<string, any> | null; // Adjust user type as needed
+  // user: Record<string, any> | null; 
   loading: boolean;
   error: string | null;
 }
@@ -15,24 +15,16 @@ interface AuthState {
 const initialState: AuthState = {
   token: localStorage.getItem('jwtToken'),
   isAuthenticated: !!localStorage.getItem('jwtToken'),
-  user: null,
+  // user: null,
   loading: false,
   error: null,
 };
-
-
 
 // Auth slice
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    clearAuth(state) {
-      state.token = null;
-      state.user = null;
-      localStorage.removeItem('jwtToken'); // Clear token from storage
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -42,7 +34,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action: PayloadAction<{ token: string; user: any }>) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.user = action.payload.user;
+        // state.user = action.payload.user;
         localStorage.setItem('jwtToken', action.payload.token);
         state.isAuthenticated = true;
         console.log(state.token);
@@ -53,13 +45,13 @@ const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.token = null;
-        state.user = null;
+        // state.user = null;
         localStorage.removeItem('jwtToken');
         state.isAuthenticated = false;
       });
   },
 });
 
-export const { clearAuth } = authSlice.actions;
+// export const { clearAuth } = authSlice.actions;
 
 export default authSlice.reducer;

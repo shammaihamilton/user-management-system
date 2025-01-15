@@ -3,6 +3,8 @@ import authReducer from './slices/authSlice';
 import themeReducer from './slices/themeSlice';
 import userReducer from './slices/usersSlice'; 
 import { setTokenGetter } from '../api/apiRequest';
+
+
 // Configure the store
 export const store = configureStore({
   reducer: {

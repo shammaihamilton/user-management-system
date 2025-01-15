@@ -5,8 +5,12 @@
     border-bottom: 1px solid $primary_color;
 
     .home-icon {
+        margin-top: 24px;
+        margin-right: 24px;
+        margin-bottom: 0px;
         color: $white;
         height: 2rem;
         width: 2rem;
     }
+
 }

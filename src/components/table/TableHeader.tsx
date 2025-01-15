@@ -120,8 +120,17 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     };
 
   return (
-    <TableHead color="primary">
-      <TableRow>
+    <TableHead color="primary" >
+      <TableRow 
+      sx={{
+        backgroundColor: (theme) => theme.palette.background.default,
+        '& .MuiTableCell-root': {
+          color: (theme) => theme.palette.primary.contrastText,
+          fontWeight: 'bold',
+
+        },
+      }}
+      >
         <TableCell padding="checkbox"  >
           <Checkbox
             color="primary"

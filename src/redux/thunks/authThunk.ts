@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
           username,
           password,
         });
-        return data; // Assumes API response includes { token, user }
+        return data; // API response { token: string }
       } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || 'Login failed');
       }

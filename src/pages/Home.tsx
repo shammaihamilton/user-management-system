@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   Box,
   Container,
@@ -58,7 +58,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 
 const Home: React.FC = () => {
   const theme = useTheme();
-
   const features = [
     {
       icon: <SpeedIcon sx={{ fontSize: 40 }} />,
@@ -73,10 +72,8 @@ const Home: React.FC = () => {
         "Enterprise-grade security with advanced encryption and protection.",
     },
   ];
-
   return (
     <Box sx={{ flexGrow: 1, minHeight: "100vh" }}>
-      {/* Hero Section */}
       <Paper
         sx={{
           position: "relative",

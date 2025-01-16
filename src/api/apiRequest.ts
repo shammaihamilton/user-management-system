@@ -29,7 +29,7 @@ export const setTokenGetter = (getter: () => string | null) => {
   getToken = getter;
 };
 
-// Request interceptor with better error handling
+// Request interceptor error handling
 apiClient.interceptors.request.use(
   (config) => {
     // const token = useSelector((state: any) => state.auth.token);

@@ -62,6 +62,9 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
         styleOverrides: {
           root: {
             textTransform: 'none',
+            fontWeight: 'bold',
+            fontSize: '16px',
+  
             color: mode === 'light' ? darkTextPrimary : darkTextPrimary,
             '&:hover': {
               color: mode === 'light' ? lightTextPrimary : darkTextPrimary,
@@ -95,6 +98,7 @@ const getThemeOptions = (mode: 'light' | 'dark'): ThemeOptions => {
               color: mode === 'light' ? darkTextPrimary : darkTextPrimary,
             },
             '& .MuiButton-root': {
+              
               color: mode === 'light' ? primaryMain : darkTextPrimary,
               backgroundColor: mode === 'light' ? lightBackgroundPaper : darkBackgroundDefault,
             },

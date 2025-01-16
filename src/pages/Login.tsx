@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../redux/thunks/authThunk';
 import { RootState, AppDispatch } from '../redux/store';
 import { Box, Button, TextField, Typography, CircularProgress, Alert } from '@mui/material';
+import { notifySuccess } from '../utils/tostify';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,6 +14,8 @@ const Login: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     dispatch(login({ username, password }));
+    notifySuccess("Login successfully!");
+
   };
 
   return (

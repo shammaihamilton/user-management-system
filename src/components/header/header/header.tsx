@@ -31,13 +31,12 @@ export default function Header() {
           component="div"
           sx={{ flexGrow: 1, color: "#000", fontSize: "1.5rem" }}
         >
-          <MuiLink component={Link} to="/" variant="h6">
- 
-            
+          <MuiLink component={Link} to="/" variant="h6">  
             <HomeIcon className="home-icon" />
           </MuiLink>
-          {/* Theme Toggler */}
+
           <DarkModeToggler />
+          {/* Theme Toggler */}
         </Typography>
 
         <Navbar />
@@ -48,9 +47,10 @@ export default function Header() {
             backgroundColor: "white",
             color: theme.palette.primary.main,
             fontWeight: "bold",
-            fontSize: "1.0rem",
+            fontSize: "1.2rem",
             "&:hover": {
               backgroundColor: theme.palette.primary.light,
+              color: "black",
             },
           }}
           disabled={loading}

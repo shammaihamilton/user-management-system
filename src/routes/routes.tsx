@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Users from "../pages/User/UsersListPage";
 import PrivateRoute from "./PrivateRoute";
 import UserFormPage from "../pages/UserFormPage";
+import Todo from "../pages/Todo";
 
 interface RouteConfig {
   isAuth: boolean;
@@ -29,6 +30,7 @@ const routes = ({ isAuth }: RouteConfig): RouteObject[] => [
         children: [
           { path: "home", element: <Home /> },
           { path: "users", element: <Users /> },
+          { path: "todo", element: <Todo /> },
           { path: "user/add", element: <UserFormPage /> }, 
           { path: "user/edit/:id", element: <UserFormPage /> },
 

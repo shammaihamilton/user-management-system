@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { addUser, updateUser, fetchUserById } from '../redux/thunks/usersThunk';
 import { AppDispatch } from '../redux/store';
+import { notifySuccess, notifyError } from '../utils/tostify';
 
 const UserFormPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -95,8 +96,19 @@ const UserFormPage: React.FC = () => {
 
     dispatch(action)
       .unwrap()
-      .then(() => navigate('/users'))
-      .catch((err) => setError(err))
+      .then(() => {
+        // Show a success message based on the action
+        if (id) {
+          notifySuccess('User updated successfully!');
+        } else {
+          notifySuccess('User added successfully!');
+        }
+        navigate('/users');
+      })
+      .catch((err) => {
+        setError(err.message || 'An error occurred!');
+        notifyError('Failed to save the user!', );
+      })
       .finally(() => setLoading(false));
   };
 

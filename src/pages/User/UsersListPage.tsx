@@ -24,8 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { fetchUsers, deleteUser } from "../../redux/thunks/usersThunk";
 import { useEffect } from "react";
-import { getToken } from "../../api/apiRequest";
-
+import { notifyError, notifySuccess } from "../../utils/tostify";
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -85,6 +84,7 @@ export default function EnhancedTable() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { users, loading, error } = useSelector((state: any) => state.users);
+  const token = useSelector((state: any) => state.auth.token);
 
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("_id");
@@ -94,7 +94,6 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   useEffect(() => {
-    const token = getToken();
     console.log("token: ", token);
     if (!token) {
       console.error("No authentication token found");
@@ -163,7 +162,7 @@ export default function EnhancedTable() {
     }
     const user = users.find((u: any) => u._id === ids[0]);
     if (!user) {
-      alert("User not found.");
+      notifyError("User not found.");
       return;
     }
     const confirmed = window.confirm(
@@ -173,11 +172,11 @@ export default function EnhancedTable() {
 
     try {
       await Promise.all(ids.map((id) => dispatch(deleteUser(id)).unwrap()));
-      alert("User deleted successfully.");
-      await dispatch(fetchUsers()).unwrap(); // Refresh the user list
+      notifySuccess("User deleted successfully!");
+      await dispatch(fetchUsers()).unwrap();
     } catch (error) {
       console.error("Failed to delete user:", error);
-      alert("Failed to delete user. Please try again.");
+      notifyError("Failed to delete user. Please try again.");
     }
   };
   const handleSelectAllClick = (
@@ -197,11 +196,11 @@ export default function EnhancedTable() {
 
   const handleDeleteSelected = () => {
     if (selected.length === 0) {
-      alert("No users selected for deletion.");
+      notifyError("No users selected for deletion.");
       return;
     }
     if (selected.length > 5) {
-      alert("You can only delete up to 5 users at once.");
+      notifyError("You can only delete up to 5 users at once.");
       return;
     }
 
@@ -215,8 +214,10 @@ export default function EnhancedTable() {
       .unwrap()
       .then(() => {
         dispatch(fetchUsers());
+        notifySuccess("Users deleted successfully!");
       })
       .catch((error) => {
+        notifyError('Failed to deleted the user!');
         console.error("Error deleting users:", error);
       });
 

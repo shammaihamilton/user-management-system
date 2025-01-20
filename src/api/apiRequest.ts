@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 // import { useSelector } from "react-redux";
 
-
 export enum AxiosMethods {
   GET = "GET",
   POST = "POST",
@@ -32,12 +31,9 @@ export const setTokenGetter = (getter: () => string | null) => {
 // Request interceptor error handling
 apiClient.interceptors.request.use(
   (config) => {
-    // const token = useSelector((state: any) => state.auth.token);
     const token = getToken();
     if (token) {
       config.headers.Authorization = `${token}`;
-      // Log request for debugging (remove in production)
-      console.log("Making request with token:", token.substring(0, 10) + "...");
     } else {
       console.warn("No token available for request:", config.url);
     }
@@ -49,14 +45,8 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor with comprehensive error handling
 apiClient.interceptors.response.use(
   (response) => {
-    // Log successful responses (remove in production)
-    console.log(
-      `Success response from ${response.config.url}:`,
-      response.status
-    );
     return response;
   },
   async (error: AxiosError) => {
@@ -68,13 +58,13 @@ apiClient.interceptors.response.use(
         case 401:
           // Handle unauthorized
           console.error("Unauthorized - clearing token");
-          localStorage.removeItem('token');
-          window.location.href = '/login';
+          localStorage.removeItem("token");
+          window.location.href = "/login";
           break;
         case 403:
           // Handle forbidden
           console.error("Forbidden - possible token expiration");
-          window.location.href = '/login';
+          window.location.href = "/login";
           break;
         case 404:
           console.error("Resource not found:", error.config?.url);
@@ -92,7 +82,6 @@ apiClient.interceptors.response.use(
   }
 );
 
-
 export const apiRequest = async <T>(
   method: AxiosMethods,
   url: string,
@@ -100,9 +89,6 @@ export const apiRequest = async <T>(
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    // Log request details (remove in production)
-    console.log(`Making ${method} request to ${url}`);
-
     const response = await apiClient.request<T>({
       method,
       url,
@@ -113,7 +99,6 @@ export const apiRequest = async <T>(
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      
       const errorMessage = error.response?.data?.message || error.message;
       const status = error.response?.status;
 

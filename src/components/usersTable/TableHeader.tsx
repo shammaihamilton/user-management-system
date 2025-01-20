@@ -26,7 +26,7 @@ export interface HeadCell {
 }
 
 
-export interface EnhancedTableProps {
+export interface TableHeadrProps {
   headCells: readonly HeadCell[];
   numSelected: number;
   onRequestSort: (
@@ -40,7 +40,7 @@ export interface EnhancedTableProps {
 }
 
 
-export function EnhancedTableHead(props: EnhancedTableProps) {
+export function TableHeadr(props: TableHeadrProps) {
   const {
     headCells,
     onSelectAllClick,

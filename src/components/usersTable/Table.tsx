@@ -12,110 +12,34 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
 import { Button, CircularProgress } from "@mui/material";
-import {
-  Data,
-  Order,
-  EnhancedTableHead,
-} from "./TableHeader";
+import { TableHeadr } from "./TableHeader";
 import { useUserContext } from "../../context/useUserContext";
 import { TableToolbar } from "./TableToolbar";
 import "./Table.scss";
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
-) => number {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
 
 export default function EnhancedTable() {
   const {
-    users,
-    loading,
-    error,
     handleDeleteUser,
+    handleSelectAllClick,
     showUserPage,
+    error,
+    users,
     headCells,
     selected,
-    setSelected,
-    handleSelectAllClick,
+    order,
+    orderBy,
+    page,
+    dense,
+    rowsPerPage,
+    handleRequestSort,
+    handleClick,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleChangeDense,
+    emptyRows,
+    visibleRows,
+    loading,
   } = useUserContext();
-
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("_id");
-
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
-
-  const visibleRows = React.useMemo(
-    () =>
-      [...users]
-        .sort(getComparator(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, users]
-  );
 
   return (
     <Box className="table-container">
@@ -145,7 +69,7 @@ export default function EnhancedTable() {
               aria-labelledby="tableTitle"
               size={dense ? "small" : "medium"}
             >
-              <EnhancedTableHead
+              <TableHeadr
                 headCells={headCells}
                 numSelected={selected.length}
                 order={order}
@@ -155,7 +79,7 @@ export default function EnhancedTable() {
                 rowCount={users.length}
               />
               <TableBody>
-                {visibleRows.map((row, index) => {
+                {visibleRows.map((row: any, index: number) => {
                   const isItemSelected = selected.includes(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 

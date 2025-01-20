@@ -1,4 +1,4 @@
-import * as React from "react";
+// import * as React from "react";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,31 +16,36 @@ import { TableHeadr } from "./TableHeader";
 import { useUserContext } from "../../context/useUserContext";
 import { TableToolbar } from "./TableToolbar";
 import "./Table.scss";
+import { useTableState } from "../../hooks/useTableState";
 
 export default function EnhancedTable() {
   const {
     handleDeleteUser,
-    handleSelectAllClick,
     showUserPage,
     error,
     users,
     headCells,
     selected,
+    setSelected,
+    loading,
+  } = useUserContext();
+  
+  const {
     order,
     orderBy,
     page,
-    dense,
     rowsPerPage,
+    dense,
+    visibleRows,
+    emptyRows,
     handleRequestSort,
-    handleClick,
     handleChangePage,
     handleChangeRowsPerPage,
     handleChangeDense,
-    emptyRows,
-    visibleRows,
-    loading,
-  } = useUserContext();
-
+    handleClick,
+    handleSelectAllClick,
+  } = useTableState({ users, selected, setSelected });
+  
   return (
     <Box className="table-container">
       <div className="table-options">

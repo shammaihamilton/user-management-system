@@ -13,9 +13,10 @@ const Login: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(login({ username, password }));
+    dispatch(login({ username, password }))
+    .unwrap()
+    .catch((error: any) => console.error("Failed to login:", error));
     notifySuccess("Login successfully!");
-
   };
 
   return (

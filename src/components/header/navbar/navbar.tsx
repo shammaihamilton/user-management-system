@@ -11,8 +11,11 @@ export default function Navbar() {
       <MuiLink component={Link} to="/todo" color="primary" variant="h6">
         Todo
       </MuiLink>
-      <MuiLink component={Link} to="/users" variant="h6">
+      {/* <MuiLink component={Link} to="/users" variant="h6">
         Users
+      </MuiLink> */}
+      <MuiLink component={Link} to="/usersPage" variant="h6">
+        Users 
       </MuiLink>
     </Box>
   );

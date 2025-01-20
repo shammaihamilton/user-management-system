@@ -103,7 +103,7 @@ const UserFormPage: React.FC = () => {
         } else {
           notifySuccess('User added successfully!');
         }
-        navigate('/users');
+        navigate('/usersPage');
       })
       .catch((err) => {
         setError(err.message || 'An error occurred!');

@@ -2,7 +2,6 @@ import { createSlice,
     PayloadAction } from '@reduxjs/toolkit';
 import { login, logout } from '../../redux/thunks/authThunk';
 
-// Define the shape of the auth state
 interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
@@ -20,7 +19,7 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Auth slice
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -37,7 +36,6 @@ const authSlice = createSlice({
         // state.user = action.payload.user;
         localStorage.setItem('jwtToken', action.payload.token);
         state.isAuthenticated = true;
-        console.log(state.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -52,6 +50,5 @@ const authSlice = createSlice({
   },
 });
 
-// export const { clearAuth } = authSlice.actions;
 
 export default authSlice.reducer;

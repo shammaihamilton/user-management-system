@@ -10,21 +10,16 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import "./userslistpage.scss";
+
 import { Button, CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import {
   Data,
   Order,
-  HeadCell,
-  EnhancedTableToolbar,
   EnhancedTableHead,
-} from "../../components/table/TableHeader";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../redux/store";
-import { fetchUsers, deleteUser } from "../../redux/thunks/usersThunk";
-import { useEffect } from "react";
-import { notifyError, notifySuccess } from "../../utils/tostify";
+} from "./TableHeader";
+import { useUserContext } from "../../context/useUserContext";
+import { TableToolbar } from "./TableToolbar";
+import "./Table.scss";
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -47,69 +42,25 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: "_id",
-    numeric: false,
-    disablePadding: true,
-    label: "user ID",
-  },
-  {
-    id: "username",
-    numeric: true,
-    disablePadding: false,
-    label: "User Name",
-  },
-  {
-    id: "fullName",
-    numeric: true,
-    disablePadding: false,
-    label: "Full Name",
-  },
-  {
-    id: "email",
-    numeric: true,
-    disablePadding: false,
-    label: "Email ",
-  },
-  {
-    id: "createdAt",
-    numeric: true,
-    disablePadding: false,
-    label: "Create At",
-  },
-];
-
 export default function EnhancedTable() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const { users, loading, error } = useSelector((state: any) => state.users);
-  const token = useSelector((state: any) => state.auth.token);
+  const {
+    users,
+    loading,
+    error,
+    handleDeleteUser,
+    showUserPage,
+    headCells,
+    selected,
+    setSelected,
+    handleSelectAllClick,
+  } = useUserContext();
 
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("_id");
-  const [selected, setSelected] = React.useState<number[]>([]);
+
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  useEffect(() => {
-    console.log("token: ", token);
-    if (!token) {
-      console.error("No authentication token found");
-      navigate("/login");
-      return;
-    }
-    dispatch(fetchUsers())
-      .unwrap()
-      .catch((error) => {
-        console.error("Failed to fetch users:", error);
-        if (error.message?.includes("403")) {
-          navigate("/login");
-          console.log(error);
-        }
-      });
-  }, [dispatch, navigate]);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -154,84 +105,6 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
-  const handleDeleteUser = async (ids: string | string[]) => {
-    if (!Array.isArray(ids)) ids = [ids]; // Convert single ID to an array
-
-    if (ids.length > 1) {
-      return;
-    }
-    const user = users.find((u: any) => u._id === ids[0]);
-    if (!user) {
-      notifyError("User not found.");
-      return;
-    }
-    const confirmed = window.confirm(
-      `Are you sure you want to delete ${user.username} user?`
-    );
-    if (!confirmed) return;
-
-    try {
-      await Promise.all(ids.map((id) => dispatch(deleteUser(id)).unwrap()));
-      notifySuccess("User deleted successfully!");
-      await dispatch(fetchUsers()).unwrap();
-    } catch (error) {
-      console.error("Failed to delete user:", error);
-      notifyError("Failed to delete user. Please try again.");
-    }
-  };
-  const handleSelectAllClick = (
-    event: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>
-  ) => {
-    if ("checked" in event.target) {
-      const target = (event.target as HTMLInputElement).checked;
-      const newSelected = users.map((n: any) => n._id);
-
-      if (target) {
-        setSelected(newSelected);
-      } else {
-        setSelected([]);
-      }
-    }
-  };
-
-  const handleDeleteSelected = () => {
-    if (selected.length === 0) {
-      notifyError("No users selected for deletion.");
-      return;
-    }
-    if (selected.length > 5) {
-      notifyError("You can only delete up to 5 users at once.");
-      return;
-    }
-
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete ${selected.length} selected users?`
-    );
-    if (!confirmDelete) return;
-
-    // Dispatch the deletion
-    dispatch(deleteUser(selected as any))
-      .unwrap()
-      .then(() => {
-        dispatch(fetchUsers());
-        notifySuccess("Users deleted successfully!");
-      })
-      .catch((error) => {
-        notifyError('Failed to deleted the user!');
-        console.error("Error deleting users:", error);
-      });
-
-    setSelected([]);
-  };
-
-  function showUserPage(id?: number): void {
-    if (id) {
-      navigate(`/user/edit/${id}`);
-      return;
-    }
-    navigate("/user/add");
-  }
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
@@ -256,10 +129,7 @@ export default function EnhancedTable() {
         </Button>
       </div>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          onDelete={handleDeleteSelected}
-        />
+        <TableToolbar numSelected={selected.length} />
         {loading ? (
           <Box display="flex" justifyContent="center" m={2}>
             <CircularProgress />
@@ -342,8 +212,6 @@ export default function EnhancedTable() {
                           Edit
                         </Button>
                       </TableCell>
-                      {/* <TableCell align="right">
-                      </TableCell> */}
                     </TableRow>
                   );
                 })}

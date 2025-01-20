@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   redirect,
+  // redirect,
   RouterProvider,
 } from "react-router-dom";
 import routes from "./routes/routes";
@@ -8,7 +9,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useEffect, useMemo } from "react";
+import { 
+  useEffect,
+  // useEffect,
+   useMemo } from "react";
 import { createAppTheme } from "./theme";
 import { ToastContainer } from "react-toastify";
 function App() {
@@ -21,7 +25,6 @@ function App() {
   const router = createBrowserRouter(routes({ isAuth }));
 
   useEffect(() => {
-    console.log("token: ", token);
     if (!token) {
       console.error("No authentication token found");
       redirect("/login");

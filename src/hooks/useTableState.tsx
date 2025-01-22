@@ -10,6 +10,7 @@ interface UseTableStateProps {
 }
 
 export function useTableState({ users, selected, setSelected }: UseTableStateProps) {
+
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Data>("_id");
   const [page, setPage] = useState(0);
@@ -25,7 +26,7 @@ export function useTableState({ users, selected, setSelected }: UseTableStatePro
     }
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const handleClick = (_event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: number[] = [];
 
@@ -38,13 +39,13 @@ export function useTableState({ users, selected, setSelected }: UseTableStatePro
     setSelected(newSelected);
   };
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+  const handleRequestSort = (_event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -73,6 +74,7 @@ export function useTableState({ users, selected, setSelected }: UseTableStatePro
     page,
     rowsPerPage,
     dense,
+    setDense,
     visibleRows,
     emptyRows,
     handleRequestSort,

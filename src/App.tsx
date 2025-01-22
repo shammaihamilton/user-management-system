@@ -25,6 +25,7 @@ function App() {
   const router = createBrowserRouter(routes({ isAuth }));
 
   useEffect(() => {
+    
     if (!token) {
       console.error("No authentication token found");
       redirect("/login");

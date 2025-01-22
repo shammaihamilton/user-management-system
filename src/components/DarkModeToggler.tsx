@@ -10,7 +10,6 @@ const DarkModeToggler: React.FC = () => {
   const theme = useTheme();
 
   return (
-
       <IconButton
         color="inherit"
         onClick={() => dispatch(toggleMode())}

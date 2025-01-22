@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { fetchUsers, deleteUser } from "../redux/thunks/usersThunk";
@@ -24,10 +25,12 @@ interface UserContextType {
   selected: number[];
   setSelected: React.Dispatch<React.SetStateAction<number[]>>;
   loading: boolean;
+  toggleSearchBar: () => void;
+  showSearchBar: boolean;
+  setShowSearchBar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
-
 
 export type Order = "asc" | "desc";
 export interface Data {
@@ -85,10 +88,14 @@ export const TableProvider: React.FC<{ children: React.ReactNode }> = ({
   const { users, error, loading } = useSelector((state: any) => state.users);
   const token = useSelector((state: any) => state.auth.token);
   const [selected, setSelected] = useState<number[]>([]);
+  const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
 
+  const toggleSearchBar = () => {
+    setShowSearchBar((prev) => !prev);
+  };
+  
   useEffect(() => {
     let isMounted = true;
-
     const fetchData = async () => {
       if (!token) {
         navigate("/login");
@@ -200,7 +207,7 @@ export const TableProvider: React.FC<{ children: React.ReactNode }> = ({
     [navigate]
   );
 
-  const values = React.useMemo(
+  const values = useMemo(
     () => ({
       handleDeleteUser,
       handleSelectAllClick,
@@ -212,23 +219,28 @@ export const TableProvider: React.FC<{ children: React.ReactNode }> = ({
       selected,
       setSelected,
       loading,
+      toggleSearchBar,
+      showSearchBar,
+      setShowSearchBar
     }),
     [
+      error,
+      handleDeleteSelected,
       handleDeleteUser,
       handleSelectAllClick,
-      handleDeleteSelected,
-      showUserPage,
-      error,
-      users,
-      headCells,
-      selected,
-      setSelected,
       loading,
+      selected,
+      showUserPage,
+      users,
+      toggleSearchBar,
+      showSearchBar,
+      setShowSearchBar
     ]
   );
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
 };
+
 
 export const useUserContext = () => {
   const context = useContext(UserContext);

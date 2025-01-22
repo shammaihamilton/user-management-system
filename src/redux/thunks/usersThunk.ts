@@ -8,7 +8,7 @@ export const fetchUsers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await apiRequest<any[]>(AxiosMethods.GET, "/api/users");
-      return data; // the API returns an array of users
+      return data; // the API returns an array of user objects
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch users"

@@ -1,34 +1,45 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../redux/thunks/authThunk';
-import { RootState, AppDispatch } from '../redux/store';
-import { Box, Button, TextField, Typography, CircularProgress, Alert } from '@mui/material';
-import { notifySuccess } from '../utils/tostify';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../redux/thunks/authThunk";
+import { RootState, AppDispatch } from "../redux/store";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
+import { notifySuccess, notifyError } from "../utils/tostify";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(login({ username, password }))
-    .unwrap()
-    .catch((error: any) => console.error("Failed to login:", error));
-    notifySuccess("Login successfully!");
+    try {
+      dispatch(login({ username, password }))
+        .unwrap()
+        .catch((error: any) => console.error("Failed to login:", error));
+      notifySuccess("Login successfully!");
+    } catch (error: any) {
+      notifyError("Failed to login: " + error);
+    }
   };
 
   return (
     <Box
       sx={{
         maxWidth: 400,
-        margin: 'auto',
+        margin: "auto",
         mt: 8,
         p: 4,
         borderRadius: 2,
         boxShadow: 3,
-        bgcolor: 'background.paper',
+        bgcolor: "background.paper",
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom align="center">
@@ -38,8 +49,8 @@ const Login: React.FC = () => {
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           gap: 2,
         }}
       >
@@ -66,9 +77,9 @@ const Login: React.FC = () => {
           color="primary"
           fullWidth
           disabled={loading}
-          sx={{ height: 48, fontSize: '1rem' }}
+          sx={{ height: 48, fontSize: "1rem" }}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
         </Button>
       </Box>
       {error && (

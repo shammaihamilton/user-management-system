@@ -15,8 +15,7 @@ export const store = configureStore({
 });
 
 setTokenGetter(() => store.getState().auth.token);
-// Infer the `RootState` type from the store's state
+
 export type RootState = ReturnType<typeof store.getState>;
 
-// Infer the `AppDispatch` type from the store's dispatch function
 export type AppDispatch = typeof store.dispatch;

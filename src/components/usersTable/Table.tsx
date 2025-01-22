@@ -1,10 +1,9 @@
-// import * as React from "react";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TablePagination from "@mui/material/TablePagination";
+// import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
@@ -17,6 +16,10 @@ import { useUserContext } from "../../context/useUserContext";
 import { TableToolbar } from "./TableToolbar";
 import "./Table.scss";
 import { useTableState } from "../../hooks/useTableState";
+// import { useState } from "react";
+import Search from "./Search";
+import { Pagination } from "./Pagination";
+import { useSearchAndPagination } from "../../hooks/useSearchAndPagination";
 
 export default function EnhancedTable() {
   const {
@@ -28,37 +31,54 @@ export default function EnhancedTable() {
     selected,
     setSelected,
     loading,
+    toggleSearchBar,
+    showSearchBar,
   } = useUserContext();
-  
+
   const {
     order,
     orderBy,
-    page,
-    rowsPerPage,
     dense,
-    visibleRows,
     emptyRows,
     handleRequestSort,
-    handleChangePage,
-    handleChangeRowsPerPage,
-    handleChangeDense,
     handleClick,
+    setDense,
     handleSelectAllClick,
   } = useTableState({ users, selected, setSelected });
-  
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    currentList: data,
+    totalPages,
+  } = useSearchAndPagination(users);
+
   return (
     <Box className="table-container">
       <div className="table-options">
         <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          control={
+            <Switch
+              checked={dense}
+              onChange={(e) => setDense(e.target.checked)}
+            />
+          }
           label="Dense padding"
         />
         <Button variant="contained" onClick={() => showUserPage()}>
           Add
         </Button>
+        {showSearchBar && (
+          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        )}
       </div>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <TableToolbar numSelected={selected.length} />
+        <TableToolbar
+          numSelected={selected.length}
+          onToggleSearchBar={toggleSearchBar}
+        />
         {loading ? (
           <Box display="flex" justifyContent="center" m={2}>
             <CircularProgress />
@@ -84,7 +104,7 @@ export default function EnhancedTable() {
                 rowCount={users.length}
               />
               <TableBody>
-                {visibleRows.map((row: any, index: number) => {
+                {data.map((row: any, index: number) => {
                   const isItemSelected = selected.includes(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -157,14 +177,12 @@ export default function EnhancedTable() {
             </Table>
           </TableContainer>
         )}
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={users.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          totalPages={totalPages}
+          // tablePerPage={tablePerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalTable={users.length}
         />
       </Paper>
     </Box>

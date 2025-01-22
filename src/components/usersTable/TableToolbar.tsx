@@ -6,9 +6,10 @@ import { useUserContext } from "../../context/useUserContext";
 
 export interface EnhancedTableToolbarProps {
   numSelected: number;
+  onToggleSearchBar: () => void;
 }
 export function TableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, onToggleSearchBar  } = props;
   const { handleDeleteSelected } = useUserContext();
 
   return (
@@ -59,7 +60,8 @@ export function TableToolbar(props: EnhancedTableToolbarProps) {
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <IconButton>
+          <IconButton onClick={onToggleSearchBar}>
+
             <FilterListIcon />
           </IconButton>
         </Tooltip>
